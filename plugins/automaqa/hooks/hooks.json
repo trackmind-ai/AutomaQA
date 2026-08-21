@@ -1,0 +1,76 @@
+{
+  "_comment": "Hooks call scripts/hooks/hook.js via Node.js — cross-platform (Windows + macOS/Linux). Node.js is the only runtime dependency (already required for Playwright). Each hook is informational only and fails silently if Node.js is unavailable.",
+
+  "hooks": {
+
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/hook.js\" pre_playwright_run",
+            "statusMessage": "Playwright run starting — check Chrome DevTools MCP",
+            "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/hook.js\" pre_maestro_run",
+            "statusMessage": "Maestro run starting — ensure device is booted",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+
+    "PostToolUse": [
+      {
+        "matcher": "Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/hook.js\" post_write",
+            "statusMessage": "File written — see next step guidance above",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/hook.js\" post_playwright_run",
+            "statusMessage": "Playwright run finished — check report",
+            "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/hook.js\" post_maestro_run",
+            "statusMessage": "Maestro run finished — check report",
+            "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/hook.js\" post_npm_install",
+            "statusMessage": "npm install done",
+            "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/hook.js\" post_extract",
+            "statusMessage": "Excel extraction done",
+            "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/hook.js\" post_spec_build",
+            "statusMessage": "Specs built — present to user for review",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+
+  }
+}

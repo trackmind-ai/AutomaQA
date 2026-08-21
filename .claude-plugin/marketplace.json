@@ -1,0 +1,14 @@
+{
+  "name": "trackmind-automaqa",
+  "owner": {
+    "name": "Trackmind",
+    "url": "https://github.com/trackmind-ai/automaqa"
+  },
+  "plugins": [
+    {
+      "source": "./plugins/automaqa",
+      "name": "automaqa",
+      "description": "Sets up and drives E2E testing: Playwright for web, Maestro for mobile."
+    }
+  ]
+}

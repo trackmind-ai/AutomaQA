@@ -1,0 +1,31 @@
+{
+  "name": "@trackmind/automaqa",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Claude Code plugin that sets up and drives E2E testing with Playwright (web) and Maestro (mobile).",
+  "license": "MIT",
+  "homepage": "https://github.com/trackmind-ai/automaqa",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/trackmind-ai/automaqa.git"
+  },
+  "scripts": {
+    "setup": "bash scripts/install.sh both",
+    "setup:mobile": "bash scripts/install.sh mobile",
+    "setup:web": "bash scripts/install.sh web",
+    "test": "node tests/extract_cases.test.js && npm run test:templates",
+    "test:docs": "bash tests/docs/verify-sample.sh",
+    "test:templates": "playwright test --config tests/playwright.config.ts",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "validate": "bash scripts/validate.sh"
+  },
+  "dependencies": {
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.60.0",
+    "@types/node": "^22.0.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.0"
+  }
+}

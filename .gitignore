@@ -1,0 +1,62 @@
+# ── Dependencies ────────────────────────────────────────────────────────────
+node_modules/
+package-lock.json
+npm-debug.log*
+yarn-error.log*
+
+# ── Playwright / test output (generated, never committed) ───────────────────
+test-results/
+playwright-report/
+blob-report/
+.playwright/
+*.zip
+trace.zip
+
+# ── Generated specs and reports from real runs ──────────────────────────────
+specs/
+!docs/**/specs/
+raw_test_cases.json
+
+# ── Test-health history ─────────────────────────────────────────
+# .automaqa/history.json is deliberately NOT ignored: shared history is what makes
+# inter-run flake detection possible. Commit it when tests run in CI.
+.automaqa/*
+!.automaqa/history.json
+
+# ── Maestro ─────────────────────────────────────────────────────────────────
+.maestro/
+maestro/flows/
+maestro/subflows/
+
+# ── Local Claude Code state (contains machine-specific absolute paths) ──────
+.claude/
+.claude/settings.local.json
+
+# ── Secrets and credentials ────────────────────────────────────────────────
+.env
+.env.*
+*.pem
+*.key
+credentials.json
+
+# ── Test-case workbooks (frequently contain real customer data) ────────────
+*.xlsx
+*.xls
+*.xlsm
+*.csv
+
+# ── Editor / OS ─────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/
+*.swp
+*~
+
+# ── Python (not used by this project; guards stray local scripts) ───────────
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+requirements.txt

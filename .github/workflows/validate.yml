@@ -1,0 +1,47 @@
+name: validate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install --no-fund --no-audit
+
+      # Must precede validate.sh: it runs the browser-backed template tests,
+      # which need a real Chromium.
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      # Runs manifests, frontmatter, typecheck, unit tests, template behaviour
+      # tests and the SAMPLE.md check.
+      - name: Validate repository
+        run: bash scripts/validate.sh
+
+  installer-lint:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Parse-check install.ps1
+        shell: pwsh
+        run: |
+          $errs = $null
+          $tokens = $null
+          $null = [System.Management.Automation.Language.Parser]::ParseFile(
+            (Resolve-Path 'scripts/install.ps1'), [ref]$tokens, [ref]$errs)
+          if ($errs -and $errs.Count -gt 0) {
+            $errs | ForEach-Object { Write-Host $_.Message }
+            exit 1
+          }
+          Write-Host 'install.ps1 parses clean'
