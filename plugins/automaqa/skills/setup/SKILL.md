@@ -317,7 +317,10 @@ export default defineConfig({
 
   // ── Execution ───────────────────────────────────────────────────────────────
   maxFailures:   0,     // NEVER stop early — every test always runs
-  retries:       0,     // failures are real, no auto-retry masking
+  // One retry in CI SURFACES flakiness: Playwright marks such tests "flaky" and the
+  // reporter records retries>0. Locally 0, so flakiness is visible while you work.
+  // Never raise this to make a suite green — see the flake-guard skill.
+  retries:       process.env.CI ? 1 : 0,
   workers:       1,     // single worker — prevents concurrent auth collisions
   fullyParallel: false,
 
@@ -360,9 +363,9 @@ export default defineConfig({
 
 ---
 
-## Step 6: Verify xlsx (SheetJS) is installed _(always — needed for Excel pipeline)_
+## Step 6: Verify xlsx (SheetJS) is installed _(always — needed if any input is Excel)_
 
-The Excel extraction script (`scripts/pipeline/extract_excel.js`) is pure JavaScript — no Python required.
+The intake script (`scripts/pipeline/extract_cases.js`) is pure JavaScript — no Python required. It reads Excel, CSV/TSV, JSON, Markdown, Gherkin, YAML, XML, and plain text; only the Excel path needs the `xlsx` package.
 
 **Windows & Mac/Linux:**
 ```bash

@@ -13,7 +13,7 @@
     "setup": "bash scripts/install.sh both",
     "setup:mobile": "bash scripts/install.sh mobile",
     "setup:web": "bash scripts/install.sh web",
-    "test": "node tests/extract_cases.test.js && npm run test:templates",
+    "test": "node tests/extract_cases.test.js && node tests/hook.test.js && npm run test:templates",
     "test:docs": "bash tests/docs/verify-sample.sh",
     "test:templates": "playwright test --config tests/playwright.config.ts",
     "typecheck": "tsc --noEmit -p tsconfig.json",

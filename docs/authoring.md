@@ -170,7 +170,7 @@ on a fixture row that another test may have mutated.
 | Setting | Value | Why |
 |---|---|---|
 | `maxFailures` | `0` | Every test always runs — a failure never hides the rest |
-| `retries` | `0` | Failures are real; retries mask flakiness |
+| `retries` | `process.env.CI ? 1 : 0` | One retry in CI surfaces intra-run flakes without masking much; locally 0 keeps flakiness visible — see [test-health.md](test-health.md) |
 | `workers` | `1` | Serial execution avoids concurrent auth collisions |
 | `screenshot` | `'on'` | Captured for every test |
 | `trace` | `'retain-on-failure'` | Trace zip only when it is useful |

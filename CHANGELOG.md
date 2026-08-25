@@ -6,7 +6,21 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+## [0.1.0] — 2026-08-25
+
+First open-source release. The plugin was previously internal; this release restructures
+it for public use and adds the flake-detection, page-object, self-healing, and
+multi-format-intake foundations.
+
 ### Added
+- Marketplace manifest so the plugin installs via `/plugin marketplace add`.
+- `docs/` — setup, workflow, authoring, intake, test-health, and troubleshooting guides.
+- `scripts/install.sh` and `scripts/install.ps1` prerequisite installers.
+- `plugins/automaqa/templates/` — `playwright.config.ts`, `versioned-reporter.ts`,
+  `pages/support/healing-locator.ts`, and `tests/support/{flake-store,quarantine}.ts`
+  are shipped templates copied into the user's project by setup.
+- MIT license, contribution guide, code of conduct, and security policy.
+- CI workflow validating manifests, skill frontmatter, typechecking, and tests.
 - **Flake detection and quarantine** (`flake-guard` skill, plus shipped
   `templates/tests/support/flake-store.ts` and `quarantine.ts`). Every run appends to
   `.automaqa/history.json`; tests are classified from cross-run pass rates and
@@ -23,13 +37,8 @@ All notable changes to this project are documented here. The format follows
 - Test health section in every HTML report: suite flake rate, tests that flaked this run,
   tests unreliable over time, consistently-failing tests, and quarantine changes. Rows
   that passed only after a retry are badged FLAKY rather than PASS.
-- 36 flake-engine tests covering classification, quarantine policy, persistence,
-  corrupt-store recovery and history capping — including explicit proof that a
-  consistently-failing test is never quarantined.
 - `docs/test-health.md` covering thresholds, quarantine policy, whether to commit the
   history file, and a five-cause flake diagnosis guide.
-- Consolidated `tests/playwright.config.ts` running the whole template behaviour suite
-  (41 tests), wired into `npm test`, `validate.sh` and CI.
 - **Page Object Model** (`page-objects` skill). Locators live in `pages/` (web) and
   `screens/` (mobile), exactly once each; specs contain behaviour only. Covers page
   and component objects, the action/query split, and incremental migration of an
@@ -50,22 +59,32 @@ All notable changes to this project are documented here. The format follows
   semicolon-delimited file to collapse into a single column.
 - Case-count reconciliation as a blocking gate in `import-cases`: a mismatch between the
   source and the import must be resolved before specs are generated.
-- Tests for the plugin itself: 28 intake-parser cases (`npm test`) and 5 healing-locator
-  cases driven through a real browser, plus `tsconfig.json` and `npm run typecheck`.
 - `docs/intake.md` documenting every supported format and the field mapping.
-- `scripts/validate.sh` now also typechecks the TypeScript templates and runs the unit
-  tests.
+- Tests for the plugin itself: 28 intake-parser cases, 11 hook-notifier cases, and 41
+  template-behaviour cases (flake-store + healing-locator, the latter driven through a
+  real browser) — all wired into `npm test`, `npm run validate`, and CI. Plus
+  `tsconfig.json` and `npm run typecheck`, and `npm run test:docs`, which compiles
+  `SAMPLE.md`'s code examples against the real shipped templates and checks the
+  documented spec file leaks no locator.
 - `@types/node` as a dev dependency — the reporter and healing helper both need Node
   globals to typecheck in a user project.
 
 ### Changed
-- `playwright.config.ts` now sets `retries: process.env.CI ? 1 : 0`. One retry in CI
-  surfaces intra-run flakes without masking much; locally 0 keeps flakiness visible.
-- `setup` scaffolds `tests/support/` and copies the flake-store and quarantine helpers.
+- Plugin renamed from `Testing` to `automaqa` (display name **AutomaQA**); all skill
+  invocations are now `/automaqa:<skill>`.
+- Plugin relocated to `plugins/automaqa/` to separate plugin source from repo metadata.
+- `.gitignore` hardened to exclude local Claude state, workbooks, generated reports,
+  and credentials.
+- `bin/` renamed to `scripts/` and split into `pipeline/` and `hooks/`.
 - Skill `excel-to-spec` renamed to `import-cases`, reflecting that intake is no longer
   Excel-only. Invoke it as `/automaqa:import-cases`.
-- `setup` now scaffolds `pages/`, `pages/components/`, `pages/support/` and
-  `screens/`, and copies the healing helper into the project.
+- `playwright.config.ts` now sets `retries: process.env.CI ? 1 : 0`. One retry in CI
+  surfaces intra-run flakes without masking much; locally 0 keeps flakiness visible.
+  Every place this value is documented or reproduced (the setup skill's copy-fallback,
+  `docs/authoring.md`'s config-invariants table) now states the same value and rationale.
+- `setup` scaffolds `tests/support/`, `pages/`, `pages/components/`, `pages/support/`,
+  and `screens/`, and copies the flake-store, quarantine, and healing helpers into the
+  project.
 - `playwright-e2e` and `maestro-e2e` now build page/screen objects before authoring any
   test, and invoke `self-healing` for churn-prone elements.
 
@@ -80,32 +99,14 @@ All notable changes to this project are documented here. The format follows
   actually enforced. Corrected to `maxFailures: 0` and caught by the new typecheck.
 - The Excel extractor hardcoded a `SKIP_SHEETS = {'care plan'}` list left over from an
   internal project, which silently dropped any sheet with that name.
-
-### Removed
-- `scripts/pipeline/extract_excel.js`, superseded by `extract_cases.js` (which still
-  reads Excel).
-
-## [0.1.0] — 2026-08-19
-
-First open-source release. The plugin was previously internal; this release restructures
-it for public use.
-
-### Added
-- Marketplace manifest so the plugin installs via `/plugin marketplace add`.
-- `docs/` — setup, workflow, authoring, and troubleshooting guides.
-- `scripts/install.sh` and `scripts/install.ps1` prerequisite installers.
-- `plugins/automaqa/templates/` — `playwright.config.ts` and `versioned-reporter.ts`
-  are now shipped templates copied into the user's project by setup.
-- MIT license, contribution guide, code of conduct, and security policy.
-- CI workflow validating manifests and skill frontmatter.
-
-### Changed
-- Plugin renamed from `Testing` to `automaqa` (display name **AutomaQA**); all skill
-  invocations are now `/automaqa:<skill>`.
-- Plugin relocated to `plugins/automaqa/` to separate plugin source from repo metadata.
-- `.gitignore` hardened to exclude local Claude state, workbooks, generated reports,
-  and credentials.
-- `bin/` renamed to `scripts/` and split into `pipeline/` and `hooks/`.
+- `scripts/hooks/hook.js` still printed `[Testing]` on every hook fire after the rename
+  to AutomaQA, and its header comment referenced the removed `extract_excel.js` — both
+  now read correctly, and a regression test (`tests/hook.test.js`) runs every known hook
+  event and fails if either string reappears.
+- Stale references to the removed `extract_excel.js`/`.py` script survived in
+  `test-orchestrator.md` and the setup skill after the `extract_cases.js` consolidation;
+  `scripts/validate.sh`'s stale-reference check now also scans `.js` files and matches
+  `extract_excel`, so a renamed file can't silently leave references behind again.
 
 ### Removed
 - All sample and generated content: the bundled `Login_Test_Cases.xlsx` workbook,
@@ -117,3 +118,5 @@ it for public use.
   permissions for scripts that no longer exist.
 - The bundled `settings.json` pinning a default agent, and the committed
   `package-lock.json`.
+- `scripts/pipeline/extract_excel.js`, superseded by `extract_cases.js` (which still
+  reads Excel).

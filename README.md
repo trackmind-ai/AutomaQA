@@ -58,12 +58,19 @@ Then set up the toolchain:
 /automaqa:setup mobile     # Maestro only
 ```
 
-Scripted alternatives, which also verify prerequisites:
+Scripted alternatives for the command-line prerequisites (Node, Playwright, browser
+drivers, Maestro CLI, Java, and Maestro MCP registration):
 
 ```bash
 bash scripts/install.sh          # macOS / Linux
 powershell -File scripts/install.ps1   # Windows
 ```
+
+**These scripts do not set up Chrome DevTools MCP or the Chrome remote-debugging
+profile.** That step involves installing an interactive plugin, locating the user's
+Chrome install, and — if Chrome is already running without the flag — asking before
+closing it, none of which a non-interactive script can safely automate. Run
+`/automaqa:setup` inside Claude Code to complete that half; see [setup.md](docs/setup.md).
 
 ---
 
@@ -177,9 +184,13 @@ is never modified.
 ```bash
 npm install
 npm run validate     # manifests, frontmatter, typecheck, unit tests, publish checks
-npm test             # intake parser tests
+npm test             # intake parser + hook notifier + template behaviour tests
 npm run typecheck    # TypeScript templates
+npm run test:docs    # SAMPLE.md's code examples still compile against the shipped templates
 ```
+
+Run `test:docs` any time you change a shipped template — `SAMPLE.md` shows real code
+against those templates, and a walkthrough with broken code is worse than none.
 
 ## Contributing
 

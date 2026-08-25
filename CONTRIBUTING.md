@@ -43,10 +43,15 @@ bash scripts/validate.sh
 
 That checks manifests parse as JSON, every skill has the required frontmatter, the
 TypeScript templates typecheck, the unit and behaviour tests pass, the code examples in
-`SAMPLE.md` still compile, and no stale plugin paths remain.
+`SAMPLE.md` still compile, every path in [`.github/CODEOWNERS`](.github/CODEOWNERS)
+actually exists, and no stale plugin paths remain.
 
 If you change a shipped template, run `npm run test:docs` too — `SAMPLE.md` shows real
 code against those templates, and a walkthrough with broken code is worse than none.
+
+A PR touching the plugin manifest, `plugins/automaqa/hooks/`, `scripts/`, or `.github/`
+needs a maintainer review per `.github/CODEOWNERS` — those paths decide what code the
+plugin installs or runs, so they don't merge on a contributor's own approval alone.
 
 ## Editing skills
 
