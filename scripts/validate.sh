@@ -57,10 +57,31 @@ for f in scripts/*.sh; do
 done
 
 echo "==> No stale plugin paths or old namespace"
-if grep -rn --include='*.md' --include='*.json' -e 'bin/pipeline' -e 'bin/hooks' -e '/Testing:' plugins/ 2>/dev/null | grep -v Binary; then
+if grep -rn --include='*.md' --include='*.json' --include='*.js' -e 'bin/pipeline' -e 'bin/hooks' -e '/Testing:' -e 'extract_excel' plugins/ 2>/dev/null | grep -v Binary; then
   fail "stale references found above"
 else
   pass "no stale references"
+fi
+
+echo "==> CODEOWNERS paths exist"
+if [ -f .github/CODEOWNERS ]; then
+  co_fail=0
+  while IFS= read -r line; do
+    # Skip blank lines and comments.
+    case "$line" in ''|'#'*) continue ;; esac
+    p="${line%% *}"
+    # Paths are repo-root-relative with a leading '/'; strip it so -e checks
+    # against the current directory (validate.sh has already cd'd to repo root),
+    # not the filesystem root. A trailing slash means "directory" and -e handles that fine.
+    check="${p#/}"
+    if [ ! -e "$check" ]; then
+      fail "CODEOWNERS references '$p', which does not exist in the repo"
+      co_fail=1
+    fi
+  done < .github/CODEOWNERS
+  [ "$co_fail" -eq 0 ] && pass ".github/CODEOWNERS"
+else
+  fail ".github/CODEOWNERS is missing"
 fi
 
 echo "==> No sample or generated content committed"
@@ -90,6 +111,14 @@ if node tests/extract_cases.test.js >/dev/null 2>&1; then
 else
   node tests/extract_cases.test.js 2>&1 | tail -12 | sed 's/^/         /'
   fail "intake parser tests failed"
+fi
+
+echo "==> Hook notifier unit tests"
+if node tests/hook.test.js >/dev/null 2>&1; then
+  pass "hook.test.js"
+else
+  node tests/hook.test.js 2>&1 | tail -12 | sed 's/^/         /'
+  fail "hook notifier tests failed"
 fi
 
 echo "==> Template behaviour tests (flake-store, healing-locator)"

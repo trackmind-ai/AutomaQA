@@ -1,0 +1,17 @@
+# SPDX-FileCopyrightText: 2026 Trackmind
+# SPDX-License-Identifier: MIT
+#
+# Files that decide what code runs, or what gets installed and how, must not merge
+# without a maintainer looking at it. Combined with branch protection's "require
+# CODEOWNERS review", this makes that review mechanical rather than a matter of
+# remembering.
+#
+# @trackmind-ai/maintainers must exist as a real GitHub team before this resolves.
+
+/.claude-plugin/marketplace.json           @trackmind-ai/maintainers
+/plugins/automaqa/.claude-plugin/plugin.json @trackmind-ai/maintainers
+/plugins/automaqa/hooks/                   @trackmind-ai/maintainers
+/scripts/                                  @trackmind-ai/maintainers
+/.github/                                  @trackmind-ai/maintainers
+
+# Open lane (no owner pin = normal review): skills, agents, templates, docs, tests.
