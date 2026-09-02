@@ -1,0 +1,43 @@
+# CodeRabbit configuration for AutomaQA
+# Docs: https://docs.coderabbit.ai/getting-started/configure-coderabbit
+
+language: en-US
+early_access: false
+
+reviews:
+  profile: chill
+  request_changes_workflow: false
+  high_level_summary: true
+  poem: false
+  review_status: true
+  collapse_walkthrough: false
+  auto_review:
+    enabled: true
+    drafts: false
+    base_branches:
+      - main
+  path_filters:
+    - "!node_modules/**"
+    - "!test-results/**"
+    - "!playwright-report/**"
+    - "!blob-report/**"
+    - "!.automaqa/**"
+    - "!**/*.xlsx"
+    - "!**/*.xls"
+    - "!**/*.csv"
+  path_instructions:
+    - path: "plugins/**"
+      instructions: >
+        Review against this repo's Claude Code plugin conventions (agents,
+        skills, commands under .claude-plugin/ and plugins/automaqa/).
+    - path: "scripts/**"
+      instructions: >
+        Install and validation scripts must stay cross-platform (Windows,
+        macOS, Linux); flag anything shell-specific without a guard.
+    - path: "tests/**"
+      instructions: >
+        Tests should be deterministic and must not depend on generated
+        artifacts under test-results/ or playwright-report/.
+
+chat:
+  auto_reply: true

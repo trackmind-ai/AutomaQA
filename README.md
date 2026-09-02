@@ -1,6 +1,9 @@
 # AutomaQA
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![validate](https://github.com/trackmind-ai/AutomaQA/actions/workflows/validate.yml/badge.svg)](https://github.com/trackmind-ai/AutomaQA/actions/workflows/validate.yml)
+[![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/trackmind-ai/AutomaQA?utm_source=oss&utm_medium=github&utm_content=trackmind-ai%2FAutomaQA&labelColor=171717&color=FF570A&label=CodeRabbit+Reviews)](https://coderabbit.ai)
+[![Claude Code Plugin](https://img.shields.io/badge/Claude%20Code-Plugin-D97757.svg)](.claude-plugin/marketplace.json)
 
 A Claude Code plugin that **sets up your E2E testing stack and then drives it** —
 [Playwright](https://playwright.dev) for web, [Maestro](https://maestro.dev) for mobile.
