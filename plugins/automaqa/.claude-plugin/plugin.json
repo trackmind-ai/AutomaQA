@@ -19,6 +19,5 @@
     "mobile",
     "web",
     "qa"
-  ],
-  "hooks": "./hooks/hooks.json"
+  ]
 }
