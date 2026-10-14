@@ -15,6 +15,16 @@ authoring and running tests.
 
 ---
 
+## Demo
+
+[![AutomaQA walkthrough: setup to running E2E tests](docs/images/demo-video.png)](https://youtu.be/S6P5KgN95RQ)
+
+A full walkthrough — installing the plugin on a clean machine, importing test cases
+from a spreadsheet, and running the generated Playwright suite against a live site.
+Covers the web (Playwright) workflow.
+
+---
+
 ## What it is — and what it isn't
 
 **It is** a setup-first testing workflow. Run `/automaqa:setup` on a bare machine and it
