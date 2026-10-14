@@ -15,6 +15,16 @@ authoring and running tests.
 
 ---
 
+## Watch it run
+
+[![Watch the AutomaQA demo on YouTube](.github/assets/demo-thumbnail.png)](https://youtu.be/S6P5KgN95RQ)
+
+A full walkthrough — installing the plugin on a clean machine, importing test cases
+from a spreadsheet, and running the generated Playwright suite against a live site.
+Covers the web (Playwright) workflow.
+
+---
+
 ## What it is — and what it isn't
 
 **It is** a setup-first testing workflow. Run `/automaqa:setup` on a bare machine and it

@@ -3,6 +3,8 @@
 AutomaQA runs four stages in order. Each one produces something the next stage depends on, so
 skipping ahead is what causes brittle tests.
 
+> Prefer to watch? [Video walkthrough of AutomaQA](https://youtu.be/S6P5KgN95RQ)
+
 ```
 setup  →  spec  →  live verification  →  automation
 ```

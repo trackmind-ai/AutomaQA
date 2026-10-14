@@ -3,6 +3,8 @@
 AutomaQA is setup-first: it assumes nothing is installed and verifies every dependency with a
 version command before using it.
 
+> Prefer to watch? [Video walkthrough of AutomaQA](https://youtu.be/S6P5KgN95RQ)
+
 ## Install the plugin
 
 ```bash
