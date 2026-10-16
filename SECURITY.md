@@ -5,7 +5,7 @@
 Please do not open a public issue for a security vulnerability.
 
 Report it privately via GitHub's [private vulnerability
-reporting](https://github.com/trackmind-ai/automaqa/security/advisories/new), or email
+reporting](https://github.com/trackmind-ai/automa-qa/security/advisories/new), or email
 **security@trackmind.com**.
 
 Include the affected version, reproduction steps, and impact. We aim to acknowledge within

@@ -117,4 +117,4 @@ the assertion — it can find a lookalike and hide the regression. Use a plain l
 ## Still stuck
 
 Open an issue with your OS, Claude Code version, the skill you invoked, and the full setup
-status table: <https://github.com/trackmind-ai/automaqa/issues>
+status table: <https://github.com/trackmind-ai/automa-qa/issues>

@@ -6,6 +6,22 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+## [0.1.1] — 2026-10-16
+
+Directory-submission readiness.
+
+### Added
+- `plugins/automaqa/README.md` — plugin-folder README with a full disclosure of what the
+  plugin runs, installs, fetches and registers.
+
+### Changed
+- Hooks now route on the actual tool call. One `PreToolUse` and one `PostToolUse` hook read
+  the payload and print guidance only for `playwright test`, `maestro test`, `npm install`,
+  `extract_cases.js` and spec/test/report writes. Previously eight hooks printed a message
+  after every Bash command and file write in every project.
+- Repository URLs now point to `trackmind-ai/automa-qa`.
+- The dev marketplace manifest has a description.
+
 ## [0.1.0] — 2026-08-25
 
 First open-source release. The plugin was previously internal; this release restructures

@@ -2,13 +2,13 @@
   "name": "automaqa",
   "displayName": "AutomaQA — Playwright + Maestro E2E",
   "description": "Installs and verifies a complete E2E toolchain (Playwright for web, Maestro for mobile), then drives spec-driven test authoring, live verification, and versioned HTML reporting.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": {
     "name": "Trackmind",
-    "url": "https://github.com/trackmind-ai/automaqa"
+    "url": "https://github.com/trackmind-ai/automa-qa"
   },
-  "homepage": "https://github.com/trackmind-ai/automaqa",
-  "repository": "https://github.com/trackmind-ai/automaqa",
+  "homepage": "https://github.com/trackmind-ai/automa-qa",
+  "repository": "https://github.com/trackmind-ai/automa-qa",
   "license": "MIT",
   "keywords": [
     "playwright",

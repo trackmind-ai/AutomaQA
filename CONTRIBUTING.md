@@ -23,7 +23,7 @@ See [Repository layout](README.md#repository-layout).
 ## Making a change
 
 ```bash
-git clone https://github.com/trackmind-ai/automaqa
+git clone https://github.com/trackmind-ai/automa-qa
 cd automaqa
 npm install
 ```
