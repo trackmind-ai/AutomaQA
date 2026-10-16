@@ -59,7 +59,7 @@ count so nothing is silently dropped.
 Requires [Claude Code](https://claude.com/claude-code).
 
 ```bash
-/plugin marketplace add trackmind-ai/automaqa
+/plugin marketplace add trackmind-ai/automa-qa
 /plugin install automaqa@trackmind-automaqa
 ```
 

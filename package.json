@@ -1,13 +1,13 @@
 {
   "name": "@trackmind/automaqa",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "description": "Claude Code plugin that sets up and drives E2E testing with Playwright (web) and Maestro (mobile).",
   "license": "MIT",
-  "homepage": "https://github.com/trackmind-ai/automaqa",
+  "homepage": "https://github.com/trackmind-ai/automa-qa",
   "repository": {
     "type": "git",
-    "url": "https://github.com/trackmind-ai/automaqa.git"
+    "url": "https://github.com/trackmind-ai/automa-qa.git"
   },
   "scripts": {
     "setup": "bash scripts/install.sh both",

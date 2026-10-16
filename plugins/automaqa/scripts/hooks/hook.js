@@ -4,10 +4,16 @@
  * ───────
  * Cross-platform hook notifier for the AutomaQA plugin pipeline.
  * Drop-in JS replacement for the old hook script — no Python required.
- * Called by hooks/hooks.json after Write or Bash tool uses.
+ * Called by hooks/hooks.json before/after Write or Bash tool uses.
  *
  * Usage:
- *   node hook.js <event>
+ *   node hook.js pre | post     (from hooks.json — reads the hook payload on stdin)
+ *   node hook.js <event>        (print one event's message directly)
+ *
+ * In pre/post mode the event is picked from the tool payload: only an AutomaQA-relevant
+ * command (playwright test, maestro test, npm install, extract_cases) or file write
+ * (spec.md, *.spec.ts, Maestro *.yaml, report*.html) prints anything. Every other Bash
+ * call or Write stays silent, so the plugin adds no noise to unrelated work.
  *
  * Events:
  *   post_write              - after any file is written
@@ -64,7 +70,32 @@ const MESSAGES = {
   -> If using Android: check AVD Manager. If using iOS: check Xcode Simulator.`,
 };
 
-const event   = process.argv[2] || '';
+/** Pick the event for a hook payload, or '' when the tool use is unrelated to AutomaQA. */
+function route(phase, payload) {
+  const input = (payload && payload.tool_input) || {};
+  if (payload && payload.tool_name === 'Write') {
+    const file = String(input.file_path || '').replace(/\\/g, '/');
+    const relevant = /(^|\/)spec\.md$|\.spec\.ts$|\.ya?ml$|(^|\/)report[^/]*\.html$/i.test(file);
+    return phase === 'post' && relevant ? 'post_write' : '';
+  }
+  const cmd = String(input.command || '');
+  if (/\bplaywright\s+test\b/.test(cmd)) return `${phase}_playwright_run`;
+  if (/\bmaestro\s+test\b/.test(cmd)) return `${phase}_maestro_run`;
+  if (phase === 'post' && /\bextract_cases\.js\b/.test(cmd)) return 'post_extract';
+  if (phase === 'post' && /\bnpm\s+(install|i|ci)\b/.test(cmd)) return 'post_npm_install';
+  return '';
+}
+
+function readStdin() {
+  try {
+    return JSON.parse(require('fs').readFileSync(0, 'utf8'));
+  } catch {
+    return null;
+  }
+}
+
+const arg   = process.argv[2] || '';
+const event = arg === 'pre' || arg === 'post' ? route(arg, readStdin()) : arg;
 const message = MESSAGES[event];
 if (message) console.log(message);
 // Silently do nothing for unknown events — hooks are informational only

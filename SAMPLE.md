@@ -28,7 +28,7 @@ below are copied from an actual run, not written by hand.
 Install the plugin in Claude Code:
 
 ```
-/plugin marketplace add trackmind-ai/automaqa
+/plugin marketplace add trackmind-ai/automa-qa
 /plugin install automaqa@trackmind-automaqa
 ```
 

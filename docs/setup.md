@@ -8,7 +8,7 @@ version command before using it.
 ## Install the plugin
 
 ```bash
-/plugin marketplace add trackmind-ai/automaqa
+/plugin marketplace add trackmind-ai/automa-qa
 /plugin install automaqa@trackmind-automaqa
 ```
 
